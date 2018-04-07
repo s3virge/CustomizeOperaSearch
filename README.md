@@ -1,5 +1,5 @@
 # CustomizeOperaSearch
-task
+Task:
     required to remove all search engines in Opera browser
 
     https://forums.opera.com/topic/14557/i-want-to-remove-yahoo-duckduckgo-amazon-bing-and-wikipedia/5

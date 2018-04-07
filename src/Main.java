@@ -1,6 +1,15 @@
 import java.io.*;
+import java.nio.file.Files;
 
 public class Main {
+    public void setOperaIstallFolder(String operaIstallFolder) {
+        this.operaIstallFolder = operaIstallFolder + "\\resources";
+    }
+
+    public void setOperaProfileFolder(String operaProfileFolder) {
+        this.operaProfileFolder = operaProfileFolder;
+    }
+
     /**
      * @kaki87 You can remove them, by following the below steps:
      *
@@ -82,13 +91,32 @@ public class Main {
         }
     }
 
+    private boolean IsOsWindows() {
+        File winDir = new File(System.getenv("SYSTEMDRIVE") + "\\Windows");
+        //if exist %systemdrive%/Windows folder
+        if (winDir.isDirectory()){
+            //hence we in Windows
+            return true;
+        }
+
+        //maybe we in linux
+        return false;
+    }
+
     public static void main(String[] args) {
         Main app = new Main();
 
-        String partnerContentFile = "default_partner_content.json";
-        app.rename(partnerContentFile, partnerContentFile + ".OLD");
-        app.overwrite("ab_tests.json", partnerContentFile);
-        app.delete(partnerContentFile);
+        //In which OS we now?
+        if (app.IsOsWindows()) {
+            //todo Needs to find folder which had max version
+            app.setOperaIstallFolder("C:\\Program Files\\Opera\\52.0.2871.40");
+            app.setOperaProfileFolder("C:\\Users\\Owner\\AppData\\Roaming\\Opera Software\\Opera Stable");
+        }
+
+            String partnerContentFile = "default_partner_content.json";
+            app.rename(partnerContentFile, partnerContentFile + ".OLD");
+            app.overwrite("ab_tests.json", partnerContentFile);
+            app.delete(partnerContentFile);
 
         System.out.println("Thet`s it. Relaunch Opera browser.");
     }
