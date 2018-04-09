@@ -1,5 +1,9 @@
 import java.io.*;
-import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 
 public class Main {
     public void setOperaIstallFolder(String operaIstallFolder) {
@@ -26,6 +30,12 @@ public class Main {
 
     private String operaIstallFolder = "/usr/lib/x86_64-linux-gnu/opera/resources";
     private String operaProfileFolder = "/home/s3virge/.config/opera";
+
+    public String getSysDrive() {
+        return sysDrive;
+    }
+
+    private String sysDrive = System.getenv("SYSTEMDRIVE");
 
     //rename the default_partner_content.json
     private void rename(String fromFile, String toFile){
@@ -92,7 +102,7 @@ public class Main {
     }
 
     private boolean IsOsWindows() {
-        File winDir = new File(System.getenv("SYSTEMDRIVE") + "\\Windows");
+        File winDir = new File( sysDrive + "\\Windows");
         //if exist %systemdrive%/Windows folder
         if (winDir.isDirectory()){
             //hence we in Windows
@@ -103,14 +113,51 @@ public class Main {
         return false;
     }
 
+    //get older opera version folder
+    private String getOlderFolder(File folder) {
+        String folderName = "none";
+        HashMap<Integer, String> hmFolders = new HashMap<>();
+        File[] folderEntries = folder.listFiles();
+
+        for (File entry : folderEntries) {
+            if (entry.isDirectory()) {
+                folderName = entry.getName();
+                String newFolderName = folderName.replace(".", "");
+                try {
+                    int iFolderName = Integer.valueOf(newFolderName);
+                    hmFolders.put(iFolderName, folderName);
+                }
+                catch(NumberFormatException ex){
+                    //System.out.println("Folder name does not consist of numbers");
+                }
+            }
+        }
+
+        //find which folder name has a max number
+        //needs to compare hashmap values
+        Set<Map.Entry<Integer, String>> set = hmFolders.entrySet();
+        int maxValue = 0;
+
+        for (Map.Entry<Integer, String> me : set) {
+            if (maxValue < me.getKey()) {
+                maxValue = me.getKey();
+                folderName = me.getValue();
+            }
+        }
+
+        //System.out.println("max value Folder Name is " + folderName);
+        return folderName;
+    }
+
     public static void main(String[] args) {
         Main app = new Main();
 
         //In which OS we now?
         if (app.IsOsWindows()) {
-            //todo Needs to find folder which had max version
-            app.setOperaIstallFolder("C:\\Program Files\\Opera\\52.0.2871.40");
-            app.setOperaProfileFolder("C:\\Users\\Owner\\AppData\\Roaming\\Opera Software\\Opera Stable");
+            //todo Needs to find folder which has max version number
+            String operaVersion = app.getOlderFolder(new File(app.getSysDrive() + "\\Program Files\\Opera"));
+            app.setOperaIstallFolder(app.getSysDrive() + "\\Program Files\\Opera\\" + operaVersion);
+            app.setOperaProfileFolder(app.sysDrive + "\\Users\\Owner\\AppData\\Roaming\\Opera Software\\Opera Stable");
         }
 
             String partnerContentFile = "default_partner_content.json";
