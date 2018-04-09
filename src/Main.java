@@ -157,7 +157,7 @@ public class Main {
             //todo Needs to find folder which has max version number
             String operaVersion = app.getOlderFolder(new File(app.getSysDrive() + "\\Program Files\\Opera"));
             app.setOperaIstallFolder(app.getSysDrive() + "\\Program Files\\Opera\\" + operaVersion);
-            app.setOperaProfileFolder(app.sysDrive + "\\Users\\Owner\\AppData\\Roaming\\Opera Software\\Opera Stable");
+            app.setOperaProfileFolder(System.getenv("APPDATA") + "\\Opera Software\\Opera Stable");
         }
 
             String partnerContentFile = "default_partner_content.json";
