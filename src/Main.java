@@ -1,16 +1,15 @@
 import java.io.*;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
 
 public class Main {
-    public void setOperaIstallFolder(String operaIstallFolder) {
+    private void setOperaIstallFolder(String operaIstallFolder) {
         this.operaIstallFolder = operaIstallFolder + "\\resources";
     }
 
-    public void setOperaProfileFolder(String operaProfileFolder) {
+    private void setOperaProfileFolder(String operaProfileFolder) {
         this.operaProfileFolder = operaProfileFolder;
     }
 
@@ -31,7 +30,7 @@ public class Main {
     private String operaIstallFolder = "/usr/lib/x86_64-linux-gnu/opera/resources";
     private String operaProfileFolder = "/home/s3virge/.config/opera";
 
-    public String getSysDrive() {
+    private String getSysDrive() {
         return sysDrive;
     }
 
