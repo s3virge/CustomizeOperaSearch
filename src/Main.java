@@ -4,7 +4,30 @@ import java.util.Map;
 import java.util.Set;
 
 
+/**
+ * @kaki87 You can remove them, by following the below steps:
+ *
+ *     Open opera:about, copy the path to the profile (Paths > Profile), and make a note of the path to
+ *     the installation root (Paths > Install), close the browser,
+ *
+ *     Open your file explorer, and navigate to the installationroot\operaversion\resources subfolder
+ *     (eg. installationroot\36.0.2130.46\resources), rename the default_partner_content.json to eg.
+ *     default_partner-old, and overwrite the default_partner_content.json with ab_tests.json,
+ *
+ *     Navigate to the profile folder, and delete the default_partner_content.json, relaunch the browser.
+ *     In case, that the above doesn't work with the ab_tests.json from your installation, you can use this one, enjoy!
+ */
+
 public class Main {
+
+    private String operaIstallFolder = "/usr/lib/x86_64-linux-gnu/opera/resources";
+    private String operaProfileFolder = "/home/s3virge/.config/opera";
+    private String sysDrive = System.getenv("SYSTEMDRIVE");
+
+    private String getSysDrive() {
+        return sysDrive;
+    }
+
     private void setOperaIstallFolder(String operaIstallFolder) {
         this.operaIstallFolder = operaIstallFolder + "\\resources";
     }
@@ -12,29 +35,6 @@ public class Main {
     private void setOperaProfileFolder(String operaProfileFolder) {
         this.operaProfileFolder = operaProfileFolder;
     }
-
-    /**
-     * @kaki87 You can remove them, by following the below steps:
-     *
-     *     Open opera:about, copy the path to the profile (Paths > Profile), and make a note of the path to
-     *     the installation root (Paths > Install), close the browser,
-     *
-     *     Open your file explorer, and navigate to the installationroot\operaversion\resources subfolder
-     *     (eg. installationroot\36.0.2130.46\resources), rename the default_partner_content.json to eg.
-     *     default_partner-old, and overwrite the default_partner_content.json with ab_tests.json,
-     *
-     *     Navigate to the profile folder, and delete the default_partner_content.json, relaunch the browser.
-     *     In case, that the above doesn't work with the ab_tests.json from your installation, you can use this one, enjoy!
-     */
-
-    private String operaIstallFolder = "/usr/lib/x86_64-linux-gnu/opera/resources";
-    private String operaProfileFolder = "/home/s3virge/.config/opera";
-
-    private String getSysDrive() {
-        return sysDrive;
-    }
-
-    private String sysDrive = System.getenv("SYSTEMDRIVE");
 
     //rename the default_partner_content.json
     private void rename(String fromFile, String toFile){
@@ -153,7 +153,6 @@ public class Main {
 
         //In which OS we now?
         if (app.IsOsWindows()) {
-            //todo Needs to find folder which has max version number
             String operaVersion = app.getOlderFolder(new File(app.getSysDrive() + "\\Program Files\\Opera"));
             app.setOperaIstallFolder(app.getSysDrive() + "\\Program Files\\Opera\\" + operaVersion);
             app.setOperaProfileFolder(System.getenv("APPDATA") + "\\Opera Software\\Opera Stable");
