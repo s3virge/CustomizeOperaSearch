@@ -112,6 +112,11 @@ public class Main {
         return false;
     }
 
+    private boolean isWindows64() {
+        File file = new File(sysDrive + "\\Windows\\SysWOW64");
+        return file.isDirectory();
+    }
+
     //get older opera version folder
     private String getOlderFolder(File folder) {
         String folderName = "none";
@@ -153,8 +158,15 @@ public class Main {
 
         //In which OS we now?
         if (app.IsOsWindows()) {
-            String operaVersion = app.getOlderFolder(new File(app.getSysDrive() + "\\Program Files\\Opera"));
-            app.setOperaIstallFolder(app.getSysDrive() + "\\Program Files\\Opera\\" + operaVersion);
+            String operaProgramFilesPath = "\\Program Files\\Opera";
+
+            if (app.isWindows64()) {
+                operaProgramFilesPath = "\\Program Files (x86)\\Opera";
+            }
+
+            String operaVersion = app.getOlderFolder(new File(app.getSysDrive() + operaProgramFilesPath));
+
+            app.setOperaIstallFolder(app.getSysDrive() + operaProgramFilesPath + "\\" + operaVersion);
             app.setOperaProfileFolder(System.getenv("APPDATA") + "\\Opera Software\\Opera Stable");
         }
 
